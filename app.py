@@ -61,7 +61,12 @@ def process_excel(file):
                 col_A_name = df2.columns[0]
 
                 # Create a dictionary for faster lookup from Sheet2
-                ref_dict = df2.set_index(col_A_name).to_dict('index')
+                # Handle duplicate keys in Sheet2: keep the LAST occurrence (or first, depending on logic. Usually last valid one is safer, or drop duplicates)
+                # If there are duplicates in Col A of Sheet2, to_dict('index') fails.
+                # We will drop duplicates based on Col A, keeping the first occurrence.
+                df2_unique = df2.drop_duplicates(subset=[col_A_name], keep='first')
+                
+                ref_dict = df2_unique.set_index(col_A_name).to_dict('index')
 
                 # Columns to copy from Sheet2 (D-J -> indices 3-9)
                 source_cols_indices = [3, 4, 5, 6, 7, 8, 9] 
