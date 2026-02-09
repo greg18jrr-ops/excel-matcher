@@ -102,7 +102,9 @@ def process_excel(file):
                 )
 
     except Exception as e:
+        import traceback
         st.error(f"發生錯誤: {e}")
+        st.code(traceback.format_exc()) # Show detailed error for debugging
 
 st.title("Excel 資料比對與填入工具 😎")
 st.markdown("""
