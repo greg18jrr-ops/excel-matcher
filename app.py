@@ -70,10 +70,10 @@ def process_excel(file):
         # Save to buffer
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            # Write the updated Sheet1
-            df1.to_excel(writer, sheet_name=sheet1_name, index=False)
-            # Write the original Sheet2
-            df2.to_excel(writer, sheet_name=sheet2_name, index=False)
+            # Write the updated Sheet1 with explicit name
+            df1.to_excel(writer, sheet_name='Sheet1_Result', index=False)
+            # Write the original Sheet2 with explicit name
+            df2.to_excel(writer, sheet_name='Sheet2_Source', index=False)
         
         output.seek(0)
         return output
