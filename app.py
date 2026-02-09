@@ -70,12 +70,10 @@ def process_excel(file):
         # Save to buffer
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # Write the updated Sheet1
             df1.to_excel(writer, sheet_name=sheet1_name, index=False)
-            # Optionally write back other sheets? usually user just wants the updated main sheet
-            # but let's keep it simple and just return the updated Sheet1 for now as "Processed_Data"
-            # Or better, preserve original file structure? 
-            # Re-writing multiple sheets is complex if we don't know structure. 
-            # Let's return just the updated Sheet1 to be safe and simple.
+            # Write the original Sheet2
+            df2.to_excel(writer, sheet_name=sheet2_name, index=False)
         
         output.seek(0)
         return output
@@ -91,6 +89,7 @@ st.markdown("""
 2. 程式會讀取 **第二個工作表 (Sheet2)** 的 **A欄**
 3. 在 **第一個工作表 (Sheet1)** 的 **I欄** 尋找相同的值
 4. 若找到，將 Sheet2 的 **D~J欄** 資料填入 Sheet1 的 **Q~W欄**
+5. 最後產生包含 **更新後的 Sheet1** 與 **原始 Sheet2** 的合併檔案
 """)
 
 uploaded_file = st.file_uploader("請上傳 Excel 檔案", type=["xlsx"])
